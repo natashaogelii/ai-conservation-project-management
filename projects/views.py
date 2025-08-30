@@ -3,6 +3,12 @@ from .models import Project
 from .forms import ProjectForm 
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .forms import RegisterForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 
 def project_list(request):
     projects = Project.objects.all()
@@ -39,3 +45,16 @@ def project_delete(request, pk):
         return redirect('project_list')  # back to all projects
 
     return render(request, 'projects/project_confirm_delete.html', {'project': project})
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Account created successfully! Please log in.")
+            return redirect("login")
+    else:
+        form = RegisterForm()
+    return render(request, "projects/register.html", {"form": form})
+
+
