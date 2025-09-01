@@ -58,3 +58,16 @@ def register(request):
     return render(request, "projects/register.html", {"form": form})
 
 
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("project_list")  # goes to home/projects page
+        else:
+            messages.error(request, "Invalid username or password")
+    return render(request, "projects/login.html")
+
+
