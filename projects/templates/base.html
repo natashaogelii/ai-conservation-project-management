@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Conservation System</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI Conservation System{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
-<body>
-    <header>
-        <h1>Conservation Project Management</h1>
-        <nav>
-            <a href="{% url 'register' %}">Register</a> |
-            <a href="{% url 'project_list' %}">Projects</a> 
-        </nav>
-    </header>
+<body class="bg-neutral-50 text-neutral-900">
+  <nav class="w-full p-4 border-b border-neutral-200 flex justify-between items-center bg-white">
+    <h1 class="text-xl font-semibold">Project Management</h1>
+    <div>
+      {% if user.is_authenticated %}
+        <a href="{% url 'project_list' %}" class="px-3 py-1 hover:text-blue-600">Projects</a>
+        <a href="{% url 'logout' %}" class="px-3 py-1 text-red-600 hover:text-red-700">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="px-3 py-1 hover:text-blue-600">Login</a>
+        <a href="{% url 'register' %}" class="px-3 py-1 hover:text-blue-600">Register</a>
+      {% endif %}
+    </div>
+  </nav>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+  <main class="flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
 </body>
 </html>

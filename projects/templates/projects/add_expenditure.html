@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="max-w-7xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
+    <!-- Heading -->
+    <h1 class="mb-4 text-3xl font-bold">Add Expenditure</h1>
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+
+        <!-- Project Dropdown -->
+        <div>
+            <label for="{{ form.project.id_for_label }}" class="block font-medium text-gray-700">Project</label>
+            {{ form.project|add_class:"w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label for="{{ form.description.id_for_label }}" class="block font-medium text-gray-700">Description</label>
+            {{ form.description|add_class:"w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+        </div>
+
+        <!-- Amount -->
+        <div>
+            <label for="{{ form.amount.id_for_label }}" class="block font-medium text-gray-700">Amount</label>
+            {{ form.amount|add_class:"w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-4 mt-4">
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Save
+            </button>
+            <a href="{% url 'home' %}" class="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

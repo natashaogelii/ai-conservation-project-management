@@ -1,17 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ project.name }}</title>
-</head>
-<body>
-    <h1>{{ project.name }}</h1>
-    <p><strong>Description:</strong> {{ project.description }}</p>
-    <p><strong>Start Date:</strong> {{ project.start_date }}</p>
-    <p><strong>End Date:</strong> {{ project.end_date }}</p>
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-6xl mx-auto mt-8 space-y-10">
 
-    <a href="{% url 'project-list' %}">Back to All Projects</a>
-    <a href="{% url 'project_update' project.pk %}">Edit Project</a>
-    <a href="{% url 'project_delete' project.pk %}">Delete</a>
+  <!-- Project Overview -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h1 class="text-3xl font-bold mb-2">{{ project.title }}</h1>
+    <p class="text-gray-600 mb-4">{{ project.description }}</p>
+    <div class="grid grid-cols-2 gap-6 text-sm">
+      <p><strong>Start:</strong> {{ project.start_date }}</p>
+      <p><strong>End:</strong> {{ project.end_date }}</p>
+      <p><strong>Budget:</strong> ${{ project.budget }}</p>
+      <p><strong>Remaining:</strong> ${{ project.remaining_budget }}</p>
+    </div>
+  </div>
 
-</body>
-</html>
+  <!-- Tasks -->
+  <div class="bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-semibold mb-4">📝 Tasks</h2>
+    <form method="POST" class="space-y-3 mb-6">
+      {% csrf_token %}
+      {{ task_form.as_p }}
+      <button type="submit" name="add_task"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        ➕ Add Task
+      </button>
+    </form>
+    <ul class="space-y-2">
+      {% for task in tasks %}
+      <li class="p-3 border rounded flex justify-between items-center {% if task.completed %}bg-green-50{% endif %}">
+        <div>
+          <p class="font-medium">{{ task.title }}</p>
+          <p class="text-gray-500 text-sm">Due: {{ task.due_date }}</p>
+        </div>
+        <span class="text-xs {% if task.completed %}text-green-600{% else %}text-red-600{% endif %}">
+          {% if task.completed %}✔ Done{% else %}⏳ Pending{% endif %}
+        </span>
+      </li>
+      {% empty %}
+      <p class="text-gray-500">No tasks yet.</p>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Expenses -->
+   <h2 class="text-xl font-semibold mt-6">Expenditures</h2>
+<table class="min-w-full bg-white mt-2">
+  <thead>
+    <tr>
+      <th class="border px-4 py-2">Description</th>
+      <th class="border px-4 py-2">Amount</th>
+      <th class="border px-4 py-2">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for expense in expenses %}
+    <tr>
+      <td class="border px-4 py-2">{{ expense.description }}</td>
+      <td class="border px-4 py-2">{{ expense.amount }}</td>
+      <td class="border px-4 py-2">{{ expense.date }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3" class="text-center border px-4 py-2">No expenditures yet.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div> 
+
+</div>
+{% endblock %}
+

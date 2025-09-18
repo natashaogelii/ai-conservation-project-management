@@ -1,14 +1,30 @@
-<h1>All Projects</h1>
-<a href="{% url 'project_create' %}">Add New Project</a>
-<ul>
-  {% for project in projects %}
-    <li>{{ project.title }} - {{ project.department }}</li>
-  {% endfor %}
-</ul>
-<ul>
-    {% for project in projects %}
-        <li>
-            <a href="{% url 'project-detail' project.id %}">{{ project.name }}</a>
-        </li>
-    {% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto mt-12">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">📂 Projects</h1>
+        <a href="{% url 'project_create' %}"
+   class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+   ➕ New Project
+</a>
+
+    </div>
+
+    {% if projects %}
+        <div class="space-y-4">
+            {% for project in projects %}
+            <div class="p-6 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition">
+                <h2 class="text-xl font-semibold mb-2">{{ project.title }}</h2>
+                <p class="text-gray-600 mb-4">{{ project.description }}</p>
+                <div class="flex space-x-4 text-sm">
+                    <a href="{% url 'project_edit' project.id %}" class="text-blue-600 hover:underline">Edit</a>
+                    <a href="{% url 'project_delete' project.pk %}">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">No projects yet. Start by creating one!</p>
+    {% endif %}
+</div>
+{% endblock %}
