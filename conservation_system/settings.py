@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'projects',
     'widget_tweaks',
+    'chatbot',
 ]
 
 MIDDLEWARE = [

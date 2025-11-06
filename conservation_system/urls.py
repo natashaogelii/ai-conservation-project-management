@@ -24,4 +24,6 @@ urlpatterns = [
     path('projects/', include('projects.urls')),
     path('', RedirectView.as_view(url='/projects/')),
     path('register/', views.register, name='register'),
+    path('chatbot/', include('chatbot.urls')),
+
 ]

@@ -126,3 +126,40 @@
 {% empty %}
   <p>No projects found.</p>
 {% endfor %}
+
+
+<button id="chatbot-toggle" style="position:fixed; bottom:20px; right:20px; background:#2c7be5; color:white; border:none; border-radius:50%; width:60px; height:60px;">💬</button>
+
+<div id="chatbot-container" style="display:none; position:fixed; bottom:90px; right:20px; width:300px; height:400px; background:white; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2); overflow:hidden;">
+  <div id="chatbot-messages" style="height:340px; overflow-y:auto; padding:10px;"></div>
+  <input id="chatbot-input" type="text" placeholder="Ask about a project..." style="width:100%; border:none; border-top:1px solid #ccc; padding:10px;">
+</div>
+
+<script>
+const toggle = document.getElementById("chatbot-toggle");
+const container = document.getElementById("chatbot-container");
+const input = document.getElementById("chatbot-input");
+const messages = document.getElementById("chatbot-messages");
+
+toggle.addEventListener("click", () => {
+  container.style.display = container.style.display === "none" ? "block" : "none";
+});
+
+input.addEventListener("keypress", e => {
+  if (e.key === "Enter") {
+    const msg = input.value;
+    messages.innerHTML += `<div><b>You:</b> ${msg}</div>`;
+    fetch("/chatbot/chat/", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+      messages.innerHTML += `<div><b>Bot:</b> ${data.response}</div>`;
+      messages.scrollTop = messages.scrollHeight;
+    });
+    input.value = "";
+  }
+});
+</script>

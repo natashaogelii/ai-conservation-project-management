@@ -17,4 +17,5 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('<int:pk>/delete/', views.project_delete_confirm, name='project_delete_confirm'),
     path('add_expenditure/', views.add_expenditure, name='add_expenditure'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]

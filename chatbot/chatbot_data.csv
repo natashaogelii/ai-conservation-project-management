@@ -1,0 +1,8 @@
+question,answer
+What is the project title?,You can view the project title under the “Project Title” field.
+What is the project budget?,The project budget indicates how much funding is allocated for this project.
+Who are the team members?,You can view all team members and their roles under “Team Members”.
+When does the project start?,The project start date is listed under “Start Date”.
+When does the project end?,The project end date is listed under “End Date”.
+What tasks are part of the project?,You can see all tasks under “Tasks” — including who they are assigned to and due dates.
+What is the total budget for all projects?,The system automatically calculates and displays this in the admin dashboard.

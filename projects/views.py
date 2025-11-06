@@ -183,5 +183,21 @@ def project_delete_confirm(request, pk):
         return redirect('home')  # or 'project_list', whichever you prefer
     return render(request, 'projects/project_confirm_delete.html', {'project': project})
 
+def dashboard(request):
+    projects = Project.objects.all()
+    total_projects = projects.count()
+    total_budget = sum(p.budget for p in projects)
+    total_spent = sum(p.total_spent for p in projects)
+    remaining_budget = total_budget - total_spent
+    avg_progress = sum(p.progress for p in projects) / total_projects if total_projects else 0
 
+    context = {
+        "total_projects": total_projects,
+        "total_budget": total_budget,
+        "total_spent": total_spent,
+        "remaining_budget": remaining_budget,
+        "avg_progress": round(avg_progress, 2),
+        "projects": projects,
+    }
+    return render(request, "projects/dashboard.html", context)
 

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="text-align:center; margin-top:20px;">Project Dashboard</h2>
+
+<!-- Quick Stats -->
+<div style="display:flex; justify-content:space-around; margin:20px 0;">
+  <div><b>Total Projects:</b> {{ total_projects }}</div>
+  <div><b>Total Budget:</b> ${{ total_budget|floatformat:2 }}</div>
+  <div><b>Total Spent:</b> ${{ total_spent|floatformat:2 }}</div>
+  <div><b>Remaining:</b> ${{ remaining_budget|floatformat:2 }}</div>
+  <div><b>Average Progress:</b> {{ avg_progress }}%</div>
+</div>
+
+<hr>
+
+<!-- Project Table -->
+<h3>Projects Overview</h3>
+<table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
+  <tr style="background:#f2f2f2;">
+    <th>Title</th>
+    <th>Budget ($)</th>
+    <th>Spent ($)</th>
+    <th>Remaining ($)</th>
+    <th>Progress (%)</th>
+  </tr>
+  {% for p in projects %}
+  <tr>
+    <td>{{ p.title }}</td>
+    <td>{{ p.budget|floatformat:2 }}</td>
+    <td>{{ p.total_spent|floatformat:2 }}</td>
+    <td>{{ p.remaining_budget|floatformat:2 }}</td>
+    <td>{{ p.progress }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr>
+
+<!-- Chart -->
+<h3 style="margin-top:30px;">Budget by Project</h3>
+<canvas id="budgetChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('budgetChart');
+const data = {
+  labels: [{% for p in projects %}'{{ p.title }}',{% endfor %}],
+  datasets: [{
+    label: 'Budget ($)',
+    data: [{% for p in projects %}{{ p.budget }},{% endfor %}],
+    backgroundColor: '#4e79a7'
+  }]
+};
+new Chart(ctx, { type: 'bar', data });
+</script>
+{% endblock %}
